@@ -3,11 +3,10 @@
     "bambu-studio": {
       "command": "python3",
       "args": [
-        "/Users/justin/Documents/BambuStudio/plugins/bambu-studio/scripts/bambu_mcp.py"
+        "./scripts/bambu_mcp.py"
       ],
+      "cwd": ".",
       "env": {
-        "BAMBU_STUDIO_REPO": "/Users/justin/Documents/BambuStudio",
-        "BAMBU_STUDIO_APP": "/Users/justin/Documents/BambuStudio/build/arm64/BambuStudio/BambuStudio.app/Contents/MacOS/BambuStudio",
         "PYTHONUNBUFFERED": "1"
       }
     }

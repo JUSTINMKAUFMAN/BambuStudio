@@ -22,12 +22,14 @@ The packaged extension is written to:
 Install it by double-clicking the `.mcpb` file or by opening Claude Desktop and
 choosing Settings -> Extensions -> Advanced settings -> Install Extension.
 
-The connector defaults to this local repo and custom app build:
+The connector defaults to this installed app path:
 
 ```text
-/Users/justin/Documents/BambuStudio
-/Users/justin/Documents/BambuStudio/build/arm64/BambuStudio/BambuStudio.app/Contents/MacOS/BambuStudio
+/Applications/BambuStudio.app/Contents/MacOS/BambuStudio
 ```
+
+It does not require a repo checkout. The MCP server uses the agent script
+bundled inside the app.
 
 After installation, Claude Desktop can call the local MCP server. Claude Code can
 then import installed Claude Desktop MCP servers with:

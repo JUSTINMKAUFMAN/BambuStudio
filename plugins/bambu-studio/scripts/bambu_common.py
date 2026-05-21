@@ -41,12 +41,31 @@ def resolve_repo() -> Path:
     for candidate in candidate_repos():
         if (candidate / "resources/agent/bambu_agent.py").exists():
             return candidate.resolve()
-    return candidate_repos()[0].resolve()
+    for candidate in candidate_repos():
+        if candidate.exists() and candidate.is_dir():
+            return candidate.resolve()
+    return plugin_root().resolve()
 
 
 def resolve_agent_script(repo: Path | None = None) -> Path:
     root = repo or resolve_repo()
-    return root / "resources/agent/bambu_agent.py"
+    env_agent = os.environ.get("BAMBU_AGENT_SCRIPT")
+    candidates: list[Path] = []
+    if env_agent:
+        candidates.append(Path(env_agent).expanduser())
+    candidates.extend(
+        [
+            root / "resources/agent/bambu_agent.py",
+            plugin_root() / "resources/agent/bambu_agent.py",
+        ]
+    )
+    app = resolve_app(root)
+    if app is not None:
+        candidates.append(app.parents[1] / "Resources/agent/bambu_agent.py")
+    for candidate in candidates:
+        if candidate.exists():
+            return candidate.resolve()
+    return candidates[0]
 
 
 def resolve_app(repo: Path | None = None) -> Path | None:
@@ -59,6 +78,11 @@ def resolve_app(repo: Path | None = None) -> Path | None:
         [
             root / "build/arm64/BambuStudio/BambuStudio.app/Contents/MacOS/BambuStudio",
             root / "build/BambuStudio/BambuStudio.app/Contents/MacOS/BambuStudio",
+            Path("/Applications/BambuStudio.app/Contents/MacOS/BambuStudio"),
+            Path("/Applications/Bambu Studio.app/Contents/MacOS/BambuStudio"),
+            Path("/Applications/BambuStudio-Codex.app/Contents/MacOS/BambuStudio"),
+            Path.home() / "Applications/BambuStudio.app/Contents/MacOS/BambuStudio",
+            Path.home() / "Applications/BambuStudio-Codex.app/Contents/MacOS/BambuStudio",
         ]
     )
     for candidate in candidates:
@@ -96,8 +120,6 @@ def run_agent_request(request: dict[str, Any], prefer_app: bool = True) -> dict[
     repo = resolve_repo()
     agent = resolve_agent_script(repo)
     app = resolve_app(repo)
-    if not agent.exists():
-        raise FileNotFoundError(f"Bambu agent script not found: {agent}")
 
     with tempfile.TemporaryDirectory(prefix="bambu-plugin-agent-") as td:
         tmp = Path(td)
@@ -109,7 +131,20 @@ def run_agent_request(request: dict[str, Any], prefer_app: bool = True) -> dict[
         commands: list[list[str]] = []
         if prefer_app and app is not None:
             commands.append([str(app), "--agent-run", str(request_path), "--agent-out", str(response_path)])
-        commands.append(["python3", str(agent), "--request", str(request_path), "--response", str(response_path)])
+        if agent.exists():
+            commands.append(["python3", str(agent), "--request", str(request_path), "--response", str(response_path)])
+        if not commands:
+            return {
+                "ok": False,
+                "summary": "Bambu Studio app and agent script were not found",
+                "errors": [
+                    {
+                        "code": "missing_runtime",
+                        "message": "Install the release BambuStudio.app in /Applications or set BAMBU_STUDIO_APP/BAMBU_AGENT_SCRIPT.",
+                    }
+                ],
+                "status": status(),
+            }
 
         for command in commands:
             completed = subprocess.run(command, cwd=repo, text=True, capture_output=True, check=False)

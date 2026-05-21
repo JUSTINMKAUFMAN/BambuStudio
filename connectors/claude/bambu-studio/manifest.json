@@ -17,7 +17,6 @@
         "${__dirname}/server/index.js"
       ],
       "env": {
-        "BAMBU_STUDIO_REPO": "${user_config.repo_path}",
         "BAMBU_STUDIO_APP": "${user_config.app_executable}",
         "PYTHONUNBUFFERED": "1"
       }
@@ -71,19 +70,12 @@
     ]
   },
   "user_config": {
-    "repo_path": {
-      "type": "directory",
-      "title": "Bambu Studio Repo",
-      "description": "Local checkout containing resources/agent/bambu_agent.py and the plugin scripts.",
-      "required": true,
-      "default": "/Users/justin/Documents/BambuStudio"
-    },
     "app_executable": {
       "type": "file",
       "title": "Custom Bambu Studio App Executable",
       "description": "The custom Bambu Studio app executable to use for agent API calls and opening 3MF files.",
       "required": true,
-      "default": "/Users/justin/Documents/BambuStudio/build/arm64/BambuStudio/BambuStudio.app/Contents/MacOS/BambuStudio"
+      "default": "/Applications/BambuStudio.app/Contents/MacOS/BambuStudio"
     }
   }
 }
