@@ -1,0 +1,20 @@
+{
+  "name": "bambu-studio-local",
+  "interface": {
+    "displayName": "Local Bambu Studio"
+  },
+  "plugins": [
+    {
+      "name": "bambu-studio",
+      "source": {
+        "source": "local",
+        "path": "./plugins/bambu-studio"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Engineering"
+    }
+  ]
+}

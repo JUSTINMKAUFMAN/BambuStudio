@@ -280,6 +280,7 @@ if (NOT MSVC AND ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" OR "${CMAKE_CXX_COMP
     # we finally get rid of the deprecated code.
     if("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
         add_compile_options(-Wno-deprecated-declarations)
+        add_compile_options(-Wno-unknown-warning-option)
     endif()
 
     if((${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR ${CMAKE_CXX_COMPILER_ID} STREQUAL "AppleClang") AND ${CMAKE_CXX_COMPILER_VERSION} VERSION_GREATER 15)

@@ -1,6 +1,7 @@
 bambustudio_add_cmake_project(Assimp
     URL "https://github.com/assimp/assimp/archive/refs/tags/v5.4.3.tar.gz"
     URL_HASH SHA256=66dfbaee288f2bc43172440a55d0235dfc7bf885dda6435c038e8000e79582cb
+    PATCH_COMMAND /bin/sh -c "test -f ASSIMP_MACOS_ZLIB_PATCHED || (/usr/bin/patch -p1 -N -i ${CMAKE_CURRENT_LIST_DIR}/0001-macos-zlib-target-os-mac.patch && touch ASSIMP_MACOS_ZLIB_PATCHED)"
     CMAKE_ARGS
         -DASSIMP_BUILD_TESTS=OFF
         -DASSIMP_BUILD_SAMPLES=OFF

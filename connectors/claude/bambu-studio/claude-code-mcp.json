@@ -1,0 +1,12 @@
+{
+  "type": "stdio",
+  "command": "/usr/bin/python3",
+  "args": [
+    "/Users/justin/Documents/BambuStudio/connectors/claude/bambu-studio/server/bambu_mcp.py"
+  ],
+  "env": {
+    "BAMBU_STUDIO_REPO": "/Users/justin/Documents/BambuStudio",
+    "BAMBU_STUDIO_APP": "/Users/justin/Documents/BambuStudio/build/arm64/BambuStudio/BambuStudio.app/Contents/MacOS/BambuStudio",
+    "PYTHONUNBUFFERED": "1"
+  }
+}

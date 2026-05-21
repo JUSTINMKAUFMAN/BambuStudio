@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Bambu Studio">
+  <rect width="128" height="128" rx="24" fill="#071f1a"/>
+  <path d="M34 31h60v66H34z" fill="#0fbf94"/>
+  <path d="M44 41h40v46H44z" fill="#071f1a"/>
+  <path d="M52 49h24v8H52zm0 16h24v8H52z" fill="#e8fff8"/>
+  <path d="M92 31 64 15 36 31h56zM36 97l28 16 28-16H36z" fill="#7ff0d4"/>
+</svg>

@@ -8190,7 +8190,12 @@ std::vector<size_t> Plater::priv::load_files(const std::vector<fs::path>& input_
                             sidebar->obj_list()->reload_all_plates();
                             q->suppress_background_process(true);
                         } else {
-                            partplate_list.reload_all_objects();
+                            partplate_list.load_from_3mf_structure(plate_data, project_filament_count);
+                            partplate_list.update_slice_context_to_current_plate(background_process);
+                            this->preview->update_gcode_result(partplate_list.get_current_slice_result());
+                            release_PlateData_list(plate_data);
+                            sidebar->obj_list()->reload_all_plates();
+                            q->suppress_background_process(true);
                         }
                     }
 

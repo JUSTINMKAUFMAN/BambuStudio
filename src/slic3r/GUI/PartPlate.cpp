@@ -6851,8 +6851,8 @@ int PartPlateList::load_from_3mf_structure(PlateDataPtrs& plate_data_list, int f
                                        plate_data_list[i]->is_support_used % plate_data_list[i]->is_label_object_enabled;
 		//load object and instance from 3mf
 		//just test for file correct or not, we will rebuild later
-		/*for (std::vector<std::pair<int, int>>::iterator it = plate_data_list[i]->objects_and_instances.begin(); it != plate_data_list[i]->objects_and_instances.end(); ++it)
-			m_plate_list[index]->obj_to_instance_set.insert(std::pair(it->first, it->second));*/
+		for (std::vector<std::pair<int, int>>::iterator it = plate_data_list[i]->objects_and_instances.begin(); it != plate_data_list[i]->objects_and_instances.end(); ++it)
+			m_plate_list[index]->obj_to_instance_set.insert(std::pair(it->first, it->second));
 		if (!plate_data_list[i]->gcode_file.empty()) {
 			m_plate_list[index]->m_gcode_path_from_3mf = plate_data_list[i]->gcode_file;
 		}
@@ -6971,6 +6971,29 @@ int PartPlateList::load_from_3mf_structure(PlateDataPtrs& plate_data_list, int f
 	}
 	print();
 	ret = reload_all_objects();
+	bool has_explicit_plate_instances = false;
+	for (const PlateData* plate_data : plate_data_list) {
+		if (plate_data && !plate_data->objects_and_instances.empty()) {
+			has_explicit_plate_instances = true;
+			break;
+		}
+	}
+	if (has_explicit_plate_instances) {
+		clear(false, false);
+		for (unsigned int i = 0; i < (unsigned int)plate_data_list.size() && i < (unsigned int)m_plate_list.size(); ++i) {
+			for (const std::pair<int, int>& item : plate_data_list[i]->objects_and_instances) {
+				int obj_idx = item.first;
+				int inst_idx = item.second;
+				if (obj_idx < 0 || obj_idx >= (int)m_model->objects.size())
+					continue;
+				ModelObject* object = m_model->objects[obj_idx];
+				if (inst_idx < 0 || inst_idx >= (int)object->instances.size())
+					continue;
+				BoundingBoxf3 boundingbox = object->instance_convex_hull_bounding_box(inst_idx);
+				m_plate_list[i]->add_instance(obj_idx, inst_idx, false, &boundingbox);
+			}
+		}
+	}
 	print();
 
 	return ret;

@@ -26,6 +26,11 @@ endif ()
 bambustudio_add_cmake_project(wxWidgets
     GIT_REPOSITORY "https://github.com/bambulab/wxWidgets"
     GIT_TAG master
+    GIT_SHALLOW TRUE
+    GIT_PROGRESS TRUE
+    GIT_SUBMODULES ""
+    GIT_SUBMODULES_RECURSE FALSE
+    PATCH_COMMAND test -f WXWIDGETS_CMAKE4_PATCHED || ${PATCH_CMD} ${CMAKE_CURRENT_LIST_DIR}/0002-cmake4-cotire-test.patch && touch WXWIDGETS_CMAKE4_PATCHED
     DEPENDS ${PNG_PKG} ${ZLIB_PKG} ${EXPAT_PKG} ${TIFF_PKG} ${JPEG_PKG}
     CMAKE_ARGS
         -DwxBUILD_PRECOMP=ON

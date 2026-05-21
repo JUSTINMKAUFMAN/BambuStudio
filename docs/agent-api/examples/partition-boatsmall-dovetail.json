@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "request_id": "partition-boatsmall-dovetail",
+  "method": "project.auto_partition_for_printer",
+  "params": {
+    "input": "/Users/justin/Documents/BambuStudio/BoatSmall.3mf",
+    "output": "/Users/justin/Documents/BambuStudio/BoatSmall_agent_dovetail_8plates.3mf",
+    "added_subpieces": 5
+  }
+}

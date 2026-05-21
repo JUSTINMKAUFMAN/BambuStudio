@@ -1,0 +1,89 @@
+{
+  "manifest_version": "0.3",
+  "name": "bambu-studio-local",
+  "display_name": "Bambu Studio Local Agent",
+  "version": "0.2.0",
+  "description": "Local Claude Desktop connector for the custom Bambu Studio agent API, 3MF inspection, dovetail partitioning, reassembly plates, validation, and visual-verification launch.",
+  "long_description": "Connects Claude Desktop to the local custom Bambu Studio fork through a stdio MCP server. The tools inspect Bambu 3MF files, run the local agent API, partition BoatSmall-style projects into dovetail pieces across plates, add reassembly plates, structurally validate plate metadata, and open results in the custom Bambu Studio app for visual verification. Physical printer send/control remains intentionally unavailable until explicit printer tools are added and authorized.",
+  "author": {
+    "name": "Justin Kaufman"
+  },
+  "server": {
+    "type": "node",
+    "entry_point": "server/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": [
+        "${__dirname}/server/index.js"
+      ],
+      "env": {
+        "BAMBU_STUDIO_REPO": "${user_config.repo_path}",
+        "BAMBU_STUDIO_APP": "${user_config.app_executable}",
+        "PYTHONUNBUFFERED": "1"
+      }
+    }
+  },
+  "tools": [
+    {
+      "name": "bambu_status",
+      "description": "Show local Bambu Studio connector, custom app, and agent API availability."
+    },
+    {
+      "name": "bambu_project_inspect",
+      "description": "Inspect a Bambu Studio 3MF through the custom agent API."
+    },
+    {
+      "name": "bambu_agent_run",
+      "description": "Run an arbitrary Bambu Studio agent API method with JSON params."
+    },
+    {
+      "name": "bambu_project_partition_for_printer",
+      "description": "Cut BoatSmall into printable dovetail pieces, preserving the two existing example pieces and producing one piece per plate."
+    },
+    {
+      "name": "bambu_project_add_reassembly_plate",
+      "description": "Add a new plate that copies the current project pieces and arranges them back into the source model shape."
+    },
+    {
+      "name": "bambu_validate_3mf_layout",
+      "description": "Validate 3MF plate/build metadata structurally. This does not replace UI verification."
+    },
+    {
+      "name": "bambu_open_in_studio",
+      "description": "Open a local 3MF in the custom Bambu Studio app for visual verification."
+    }
+  ],
+  "keywords": [
+    "bambu-studio",
+    "bambu-lab",
+    "3mf",
+    "h2d",
+    "slicer",
+    "plates",
+    "dovetail",
+    "claude",
+    "mcp"
+  ],
+  "license": "AGPL-3.0-or-later",
+  "compatibility": {
+    "platforms": [
+      "darwin"
+    ]
+  },
+  "user_config": {
+    "repo_path": {
+      "type": "directory",
+      "title": "Bambu Studio Repo",
+      "description": "Local checkout containing resources/agent/bambu_agent.py and the plugin scripts.",
+      "required": true,
+      "default": "/Users/justin/Documents/BambuStudio"
+    },
+    "app_executable": {
+      "type": "file",
+      "title": "Custom Bambu Studio App Executable",
+      "description": "The custom Bambu Studio app executable to use for agent API calls and opening 3MF files.",
+      "required": true,
+      "default": "/Users/justin/Documents/BambuStudio/build/arm64/BambuStudio/BambuStudio.app/Contents/MacOS/BambuStudio"
+    }
+  }
+}

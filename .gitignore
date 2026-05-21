@@ -38,4 +38,8 @@ compile_commands.json
 **/node_modules/
 .worktrees/
 **/dist/
-
+**/__pycache__/
+*.py[cod]
+result.json
+*_clean_agent.3mf
+*.before_reassembly.3mf

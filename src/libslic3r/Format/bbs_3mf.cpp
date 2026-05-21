@@ -1640,6 +1640,7 @@ void PlateData::parse_filament_info(GCodeProcessorResult *result)
             PlateData * plate = plate_data_list[it->first-1];
             plate->locked = it->second->locked;
             plate->plate_index = it->second->plate_index-1;
+            plate->objects_and_instances = it->second->objects_and_instances;
             plate->obj_inst_map = it->second->obj_inst_map;
             plate->gcode_file = it->second->gcode_file;
             plate->gcode_prediction = it->second->gcode_prediction;
@@ -1663,8 +1664,8 @@ void PlateData::parse_filament_info(GCodeProcessorResult *result)
             //plate->pattern_file = it->second->pattern_file;
             plate->no_light_thumbnail_file = it->second->no_light_thumbnail_file;
             plate->top_file = it->second->top_file;
-            plate->pick_file = it->second->pick_file.empty();
-            plate->pattern_bbox_file = it->second->pattern_bbox_file.empty();
+            plate->pick_file = it->second->pick_file;
+            plate->pattern_bbox_file = it->second->pattern_bbox_file;
             plate->config = it->second->config;
             plate->filament_change_sequence = it->second->filament_change_sequence;
             plate->nozzle_change_sequence = it->second->nozzle_change_sequence;
@@ -2330,6 +2331,7 @@ void PlateData::parse_filament_info(GCodeProcessorResult *result)
             plate_data_list[it->first-1]->locked = it->second->locked;
             plate_data_list[it->first-1]->plate_index = it->second->plate_index-1;
             plate_data_list[it->first-1]->plate_name  = it->second->plate_name;
+            plate_data_list[it->first-1]->objects_and_instances = it->second->objects_and_instances;
             plate_data_list[it->first-1]->obj_inst_map = it->second->obj_inst_map;
             plate_data_list[it->first-1]->gcode_file = (m_load_restore || it->second->gcode_file.empty()) ? it->second->gcode_file : m_backup_path + "/" + it->second->gcode_file;
             plate_data_list[it->first-1]->gcode_prediction = it->second->gcode_prediction;
@@ -4804,6 +4806,22 @@ void PlateData::parse_filament_info(GCodeProcessorResult *result)
         }
 
         m_curr_plater->obj_inst_map.emplace(m_curr_instance.object_id, std::make_pair(m_curr_instance.instance_id, m_curr_instance.identify_id));
+        IndexToPathMap::iterator index_iter = m_index_paths.find(m_curr_instance.object_id);
+        if (index_iter == m_index_paths.end()) {
+            BOOST_LOG_TRIVIAL(warning) << __FUNCTION__ << ":" << __LINE__
+                << boost::format(", can not find object for plate's item, id=%1%, skip object-instance restore") % m_curr_instance.object_id;
+        }
+        else {
+            Id temp_id = std::make_pair(index_iter->second, index_iter->first);
+            IdToModelObjectMap::iterator object_item = m_objects.find(temp_id);
+            if (object_item == m_objects.end()) {
+                BOOST_LOG_TRIVIAL(warning) << __FUNCTION__ << ":" << __LINE__
+                    << boost::format(", can not find object for plate's item, ID <%1%, %2%>, skip object-instance restore") % index_iter->second % index_iter->first;
+            }
+            else {
+                m_curr_plater->objects_and_instances.emplace_back(object_item->second, m_curr_instance.instance_id);
+            }
+        }
         m_curr_instance.object_id = m_curr_instance.instance_id = -1;
         m_curr_instance.identify_id = 0;
         return true;

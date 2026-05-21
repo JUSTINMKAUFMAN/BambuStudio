@@ -9638,6 +9638,34 @@ CLIMiscConfigDef::CLIMiscConfigDef()
     def->cli_params = "assemble_list.json";
     def->set_default_value(new ConfigOptionString());
 
+    def = this->add("agent_run", coString);
+    def->label = "Run Codex agent request";
+    def->tooltip = "Run a JSON automation request through the Bambu Studio agent bridge.";
+    def->cli = "agent-run";
+    def->cli_params = "request.json";
+    def->set_default_value(new ConfigOptionString());
+
+    def = this->add("agent_out", coString);
+    def->label = "Codex agent response";
+    def->tooltip = "Write the JSON automation response to this file.";
+    def->cli = "agent-out";
+    def->cli_params = "response.json";
+    def->set_default_value(new ConfigOptionString());
+
+    def = this->add("agent_server", coString);
+    def->label = "Codex agent server";
+    def->tooltip = "Reserved endpoint for a local JSON agent server.";
+    def->cli = "agent-server";
+    def->cli_params = "host:port";
+    def->set_default_value(new ConfigOptionString());
+
+    def = this->add("agent_token_file", coString);
+    def->label = "Codex agent token file";
+    def->tooltip = "Reserved token file for a local JSON agent server.";
+    def->cli = "agent-token-file";
+    def->cli_params = "token.txt";
+    def->set_default_value(new ConfigOptionString());
+
     /*def = this->add("output", coString);
     def->label = L("Output File");
     def->tooltip = L("The file where the output will be written (if not specified, it will be based on the input file).");

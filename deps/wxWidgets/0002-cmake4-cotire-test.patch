@@ -1,0 +1,25 @@
+diff --git a/build/cmake/modules/cotire_test/CMakeLists.txt b/build/cmake/modules/cotire_test/CMakeLists.txt
+index 353a949f5d..50e7c4203b 100644
+--- a/build/cmake/modules/cotire_test/CMakeLists.txt
++++ b/build/cmake/modules/cotire_test/CMakeLists.txt
+@@ -1,6 +1,6 @@
+ # cotire example project
+ 
+-cmake_minimum_required(VERSION 2.8.12)
++cmake_minimum_required(VERSION 3.5)
+ 
+ if (POLICY CMP0058)
+ 	# Ninja requires custom command byproducts to be explicit
+diff --git a/build/cmake/modules/cotire.cmake b/build/cmake/modules/cotire.cmake
+index 7fcd81191c..c662878b8f 100644
+--- a/build/cmake/modules/cotire.cmake
++++ b/build/cmake/modules/cotire.cmake
+@@ -37,7 +37,7 @@ endif()
+ if (NOT CMAKE_SCRIPT_MODE_FILE)
+ 	cmake_policy(PUSH)
+ endif()
+-cmake_minimum_required(VERSION 2.8.12)
++cmake_minimum_required(VERSION 3.5)
+ if (NOT CMAKE_SCRIPT_MODE_FILE)
+ 	cmake_policy(POP)
+ endif()

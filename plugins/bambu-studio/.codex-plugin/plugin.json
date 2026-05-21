@@ -1,0 +1,50 @@
+{
+  "name": "bambu-studio",
+  "version": "0.2.0",
+  "description": "Local Codex integration for the custom Bambu Studio agent API, 3MF inspection, dovetail partitioning, reassembly plates, plate validation, and printer-prep workflows.",
+  "author": {
+    "name": "Justin Kaufman",
+    "email": "local@localhost",
+    "url": "https://github.com/JUSTINMKAUFMAN"
+  },
+  "homepage": "https://github.com/JUSTINMKAUFMAN/BambuStudio",
+  "repository": "https://github.com/JUSTINMKAUFMAN/BambuStudio",
+  "license": "AGPL-3.0-or-later",
+  "keywords": [
+    "bambu-studio",
+    "bambu-lab",
+    "3mf",
+    "h2d",
+    "slicer",
+    "plates",
+    "dovetail",
+    "codex"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Bambu Studio",
+    "shortDescription": "Control the local Bambu Studio agent API for 3MF prep and validation",
+    "longDescription": "Adds a local MCP server, CLI wrappers, and workflow guidance so Codex can inspect Bambu Studio 3MF projects, run the custom agent API, create printer-oriented dovetail partitions, add reassembly plates, validate plate metadata without overclaiming UI behavior, and open outputs in the local custom Bambu Studio build for visual verification.",
+    "developerName": "Justin Kaufman",
+    "category": "Engineering",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/JUSTINMKAUFMAN/BambuStudio",
+    "privacyPolicyURL": "https://openai.com/policies/privacy-policy/",
+    "termsOfServiceURL": "https://openai.com/policies/terms-of-use/",
+    "defaultPrompt": [
+      "Inspect this Bambu Studio 3MF project.",
+      "Partition this model for my H2D.",
+      "Add a reassembly plate for the generated pieces.",
+      "Validate plate layout before opening it."
+    ],
+    "brandColor": "#00A886",
+    "composerIcon": "./assets/bambu-studio.svg",
+    "logo": "./assets/bambu-studio.svg",
+    "screenshots": []
+  }
+}
