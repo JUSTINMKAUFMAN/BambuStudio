@@ -11,6 +11,7 @@ APP_PART_PREFIX="$APP_ZIP.part-"
 CODEX_ZIP="$DIST_DIR/bambu-studio-codex-plugin-${VERSION}.zip"
 CLAUDE_MCPB_VERSIONED="$DIST_DIR/bambu-studio-claude-${VERSION}.mcpb"
 CHECKSUMS="$DIST_DIR/checksums-${VERSION}.txt"
+APP_INSTALLER="$DIST_DIR/install-bambu-studio-agent-macos-${VERSION}.command"
 
 mkdir -p "$DIST_DIR"
 
@@ -19,7 +20,7 @@ if [[ ! -d "$APP_SRC" ]]; then
   exit 1
 fi
 
-rm -f "$APP_ZIP" "$APP_PART_PREFIX"* "$CODEX_ZIP" "$CLAUDE_MCPB_VERSIONED" "$CHECKSUMS"
+rm -f "$APP_ZIP" "$APP_PART_PREFIX"* "$CODEX_ZIP" "$CLAUDE_MCPB_VERSIONED" "$CHECKSUMS" "$APP_INSTALLER"
 
 ditto -c -k --sequesterRsrc --keepParent "$APP_SRC" "$APP_ZIP"
 # GitHub release uploads for this repo are reliable with small app chunks.
@@ -97,5 +98,53 @@ MD
   shasum -a 256 "$(basename "$APP_ZIP")" "$(basename "$APP_PART_PREFIX")"* "$(basename "$CODEX_ZIP")" "$(basename "$CLAUDE_MCPB_VERSIONED")" > "$CHECKSUMS"
 )
 
-printf '%s\n%s\n%s\n%s\n' "$APP_ZIP" "$CODEX_ZIP" "$CLAUDE_MCPB_VERSIONED" "$CHECKSUMS"
+PART_COUNT="$(find "$DIST_DIR" -maxdepth 1 -name "$(basename "$APP_PART_PREFIX")*" | wc -l | tr -d ' ')"
+LAST_PART_INDEX="$((PART_COUNT - 1))"
+cat > "$APP_INSTALLER" <<SH
+#!/usr/bin/env bash
+set -euo pipefail
+
+VERSION="$VERSION"
+REPO="JUSTINMKAUFMAN/BambuStudio"
+TAG="$VERSION"
+BASE_URL="https://github.com/\${REPO}/releases/download/\${TAG}"
+APP_ZIP="BambuStudio-Agent-macOS-arm64-\${VERSION}.zip"
+PART_PREFIX="\${APP_ZIP}.part-"
+CHECKSUMS="checksums-\${VERSION}.txt"
+WORK_DIR="\$(mktemp -d)"
+
+cleanup() {
+  rm -rf "\$WORK_DIR"
+}
+trap cleanup EXIT
+
+cd "\$WORK_DIR"
+echo "Downloading Bambu Studio agent app parts..."
+for idx in \$(seq -f "%03g" 0 "$LAST_PART_INDEX"); do
+  file="\${PART_PREFIX}\${idx}"
+  echo "  \$file"
+  curl -L --fail --retry 5 --retry-delay 2 -o "\$file" "\${BASE_URL}/\$file"
+done
+curl -L --fail --retry 5 --retry-delay 2 -o "\$CHECKSUMS" "\${BASE_URL}/\$CHECKSUMS"
+
+echo "Verifying parts..."
+shasum -a 256 -c "\$CHECKSUMS" --ignore-missing
+
+echo "Reconstructing app ZIP..."
+cat "\${PART_PREFIX}"* > "\$APP_ZIP"
+shasum -a 256 -c "\$CHECKSUMS" --ignore-missing
+
+echo "Expanding app..."
+unzip -q "\$APP_ZIP"
+
+echo "Installing BambuStudio.app into /Applications..."
+rm -rf /Applications/BambuStudio.app 2>/dev/null || sudo rm -rf /Applications/BambuStudio.app
+ditto BambuStudio.app /Applications/BambuStudio.app 2>/dev/null || sudo ditto BambuStudio.app /Applications/BambuStudio.app
+
+echo "Installed /Applications/BambuStudio.app"
+open -R /Applications/BambuStudio.app
+SH
+chmod +x "$APP_INSTALLER"
+
+printf '%s\n%s\n%s\n%s\n%s\n' "$APP_ZIP" "$CODEX_ZIP" "$CLAUDE_MCPB_VERSIONED" "$CHECKSUMS" "$APP_INSTALLER"
 printf '%s\n' "$APP_PART_PREFIX"*
