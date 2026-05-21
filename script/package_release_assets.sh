@@ -7,6 +7,7 @@ VERSION="${1:-$(git -C "$ROOT_DIR" rev-parse --short HEAD)}"
 APP_SRC="$ROOT_DIR/build/arm64/BambuStudio/BambuStudio.app"
 
 APP_ZIP="$DIST_DIR/BambuStudio-Agent-macOS-arm64-${VERSION}.zip"
+APP_PART_PREFIX="$APP_ZIP.part-"
 CODEX_ZIP="$DIST_DIR/bambu-studio-codex-plugin-${VERSION}.zip"
 CLAUDE_MCPB_VERSIONED="$DIST_DIR/bambu-studio-claude-${VERSION}.mcpb"
 CHECKSUMS="$DIST_DIR/checksums-${VERSION}.txt"
@@ -18,9 +19,11 @@ if [[ ! -d "$APP_SRC" ]]; then
   exit 1
 fi
 
-rm -f "$APP_ZIP" "$CODEX_ZIP" "$CLAUDE_MCPB_VERSIONED" "$CHECKSUMS"
+rm -f "$APP_ZIP" "$APP_PART_PREFIX"* "$CODEX_ZIP" "$CLAUDE_MCPB_VERSIONED" "$CHECKSUMS"
 
 ditto -c -k --sequesterRsrc --keepParent "$APP_SRC" "$APP_ZIP"
+# GitHub release uploads for this repo are reliable with small app chunks.
+split -b 3m -d -a 3 "$APP_ZIP" "$APP_PART_PREFIX"
 
 "$ROOT_DIR/script/package_claude_connector.sh" >/dev/null
 cp "$DIST_DIR/bambu-studio-claude.mcpb" "$CLAUDE_MCPB_VERSIONED"
@@ -91,7 +94,8 @@ MD
 
 (
   cd "$DIST_DIR"
-  shasum -a 256 "$(basename "$APP_ZIP")" "$(basename "$CODEX_ZIP")" "$(basename "$CLAUDE_MCPB_VERSIONED")" > "$CHECKSUMS"
+  shasum -a 256 "$(basename "$APP_ZIP")" "$(basename "$APP_PART_PREFIX")"* "$(basename "$CODEX_ZIP")" "$(basename "$CLAUDE_MCPB_VERSIONED")" > "$CHECKSUMS"
 )
 
 printf '%s\n%s\n%s\n%s\n' "$APP_ZIP" "$CODEX_ZIP" "$CLAUDE_MCPB_VERSIONED" "$CHECKSUMS"
+printf '%s\n' "$APP_PART_PREFIX"*
