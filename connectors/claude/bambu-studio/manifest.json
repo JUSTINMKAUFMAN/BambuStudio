@@ -2,7 +2,7 @@
   "manifest_version": "0.3",
   "name": "bambu-studio-local",
   "display_name": "Bambu Studio Local Agent",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "Local Claude Desktop connector for the custom Bambu Studio agent API, 3MF inspection, dovetail partitioning, reassembly plates, validation, and visual-verification launch.",
   "long_description": "Connects Claude Desktop to the local custom Bambu Studio fork through a stdio MCP server. The tools inspect Bambu 3MF files, run the local agent API, partition BoatSmall-style projects into dovetail pieces across plates, add reassembly plates, structurally validate plate metadata, and open results in the custom Bambu Studio app for visual verification. Physical printer send/control remains intentionally unavailable until explicit printer tools are added and authorized.",
   "author": {
@@ -75,7 +75,7 @@
       "title": "Custom Bambu Studio App Executable",
       "description": "The custom Bambu Studio app executable to use for agent API calls and opening 3MF files.",
       "required": true,
-      "default": "/Applications/BambuStudio.app/Contents/MacOS/BambuStudio"
+      "default": "/Applications/BambuStudio-Codex.app/Contents/MacOS/BambuStudio"
     }
   }
 }

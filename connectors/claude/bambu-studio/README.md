@@ -25,7 +25,7 @@ choosing Settings -> Extensions -> Advanced settings -> Install Extension.
 The connector defaults to this installed app path:
 
 ```text
-/Applications/BambuStudio.app/Contents/MacOS/BambuStudio
+/Applications/BambuStudio-Codex.app/Contents/MacOS/BambuStudio
 ```
 
 It does not require a repo checkout. The MCP server uses the agent script

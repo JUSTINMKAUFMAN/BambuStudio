@@ -171,7 +171,7 @@ def dispatch(message: dict[str, Any]) -> dict[str, Any] | None:
             {
                 "protocolVersion": message.get("params", {}).get("protocolVersion", "2024-11-05"),
                 "capabilities": {"tools": {}},
-                "serverInfo": {"name": "bambu-studio", "version": "0.2.0"},
+                "serverInfo": {"name": "bambu-studio", "version": "0.2.2"},
             },
         )
     if method == "tools/list":

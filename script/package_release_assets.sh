@@ -84,11 +84,11 @@ chmod +x "$CODEX_ROOT/install-codex-plugin.command"
 cat > "$CODEX_ROOT/README-INSTALL.md" <<'MD'
 # Bambu Studio Codex Plugin
 
-1. Install `BambuStudio.app` from the release app ZIP into `/Applications`.
+1. Install `BambuStudio-Codex.app` from the release app ZIP into `/Applications`.
 2. Double-click `install-codex-plugin.command`.
 3. In Codex, install the `bambu-studio` plugin from the opened local marketplace.
 
-The MCP server looks for the app in `/Applications/BambuStudio.app` by default.
+The MCP server looks for the app in `/Applications/BambuStudio-Codex.app` by default.
 Set `BAMBU_STUDIO_APP` if you install the app somewhere else.
 MD
 
@@ -141,12 +141,12 @@ shasum -a 256 -c "\$CHECKSUMS" --ignore-missing
 echo "Expanding app..."
 unzip -q "\$APP_ZIP"
 
-echo "Installing BambuStudio.app into /Applications..."
-rm -rf /Applications/BambuStudio.app 2>/dev/null || sudo rm -rf /Applications/BambuStudio.app
-ditto BambuStudio.app /Applications/BambuStudio.app 2>/dev/null || sudo ditto BambuStudio.app /Applications/BambuStudio.app
+echo "Installing BambuStudio-Codex.app into /Applications..."
+rm -rf /Applications/BambuStudio-Codex.app 2>/dev/null || sudo rm -rf /Applications/BambuStudio-Codex.app
+ditto BambuStudio.app /Applications/BambuStudio-Codex.app 2>/dev/null || sudo ditto BambuStudio.app /Applications/BambuStudio-Codex.app
 
-echo "Installed /Applications/BambuStudio.app"
-open -R /Applications/BambuStudio.app
+echo "Installed /Applications/BambuStudio-Codex.app"
+open -R /Applications/BambuStudio-Codex.app
 SH
 chmod +x "$APP_INSTALLER"
 

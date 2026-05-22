@@ -6,7 +6,7 @@
   ],
   "env": {
     "BAMBU_STUDIO_REPO": "/Users/justin/Documents/BambuStudio",
-    "BAMBU_STUDIO_APP": "/Users/justin/Documents/BambuStudio/build/arm64/BambuStudio/BambuStudio.app/Contents/MacOS/BambuStudio",
+    "BAMBU_STUDIO_APP": "/Applications/BambuStudio-Codex.app/Contents/MacOS/BambuStudio",
     "PYTHONUNBUFFERED": "1"
   }
 }

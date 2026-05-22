@@ -76,13 +76,13 @@ def resolve_app(repo: Path | None = None) -> Path | None:
     root = repo or resolve_repo()
     candidates.extend(
         [
+            Path("/Applications/BambuStudio-Codex.app/Contents/MacOS/BambuStudio"),
+            Path.home() / "Applications/BambuStudio-Codex.app/Contents/MacOS/BambuStudio",
             root / "build/arm64/BambuStudio/BambuStudio.app/Contents/MacOS/BambuStudio",
             root / "build/BambuStudio/BambuStudio.app/Contents/MacOS/BambuStudio",
             Path("/Applications/BambuStudio.app/Contents/MacOS/BambuStudio"),
             Path("/Applications/Bambu Studio.app/Contents/MacOS/BambuStudio"),
-            Path("/Applications/BambuStudio-Codex.app/Contents/MacOS/BambuStudio"),
             Path.home() / "Applications/BambuStudio.app/Contents/MacOS/BambuStudio",
-            Path.home() / "Applications/BambuStudio-Codex.app/Contents/MacOS/BambuStudio",
         ]
     )
     for candidate in candidates:
@@ -140,7 +140,7 @@ def run_agent_request(request: dict[str, Any], prefer_app: bool = True) -> dict[
                 "errors": [
                     {
                         "code": "missing_runtime",
-                        "message": "Install the release BambuStudio.app in /Applications or set BAMBU_STUDIO_APP/BAMBU_AGENT_SCRIPT.",
+                        "message": "Install /Applications/BambuStudio-Codex.app or set BAMBU_STUDIO_APP/BAMBU_AGENT_SCRIPT.",
                     }
                 ],
                 "status": status(),

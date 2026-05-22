@@ -1,6 +1,6 @@
 {
   "name": "bambu-studio",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "Local Codex integration for the custom Bambu Studio agent API, 3MF inspection, dovetail partitioning, reassembly plates, plate validation, and printer-prep workflows.",
   "author": {
     "name": "Justin Kaufman",
