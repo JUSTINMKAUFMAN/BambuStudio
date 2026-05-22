@@ -20,6 +20,10 @@ if [[ ! -d "$APP_SRC" ]]; then
   exit 1
 fi
 
+if [[ "${BAMBU_SIGN_RELEASE_APP:-0}" == "1" ]]; then
+  "$ROOT_DIR/script/sign_macos_app.sh" "$APP_SRC" >/dev/null
+fi
+
 rm -f "$APP_ZIP" "$APP_PART_PREFIX"* "$CODEX_ZIP" "$CLAUDE_MCPB_VERSIONED" "$CHECKSUMS" "$APP_INSTALLER"
 
 ditto -c -k --sequesterRsrc --keepParent "$APP_SRC" "$APP_ZIP"

@@ -298,4 +298,13 @@ namespace Slic3r {
         if (a.cert_sha256 == b.cert_sha256) return true;
         return false;
     }
+
+    bool IsTrustedBambuNetworkingPublisher(const SignerSummary& host, const SignerSummary& module)
+    {
+        if (IsSamePublisher(host, module)) return true;
+
+        // The official macOS networking plugin is signed separately from local forks.
+        return module.team_id == "T3UBR9Y3B2" &&
+               module.subject_dn.find("Shanghai Lunkuo Technology") != std::string::npos;
+    }
 }

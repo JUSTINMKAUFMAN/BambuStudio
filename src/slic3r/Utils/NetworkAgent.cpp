@@ -209,7 +209,7 @@ int NetworkAgent::initialize_network_module(bool using_backup, bool validate_cer
     if (self_cert_summary) {
         module_cert_summary = SummarizeModule(library);
         if (module_cert_summary) {
-            if (IsSamePublisher(*self_cert_summary, *module_cert_summary))
+            if (IsTrustedBambuNetworkingPublisher(*self_cert_summary, *module_cert_summary))
                 networking_module = LoadLibrary(lib_wstr);
             else
                 BOOST_LOG_TRIVIAL(info) << "module is from another publisher:" << module_cert_summary->as_print();
@@ -231,7 +231,7 @@ int NetworkAgent::initialize_network_module(bool using_backup, bool validate_cer
         if (self_cert_summary) {
             module_cert_summary = SummarizeModule(library_path);
             if (module_cert_summary) {
-                if (IsSamePublisher(*self_cert_summary, *module_cert_summary))
+                if (IsTrustedBambuNetworkingPublisher(*self_cert_summary, *module_cert_summary))
                     networking_module = LoadLibrary(lib_wstr);
                 else
                     BOOST_LOG_TRIVIAL(info) << "module is from another publisher:" << module_cert_summary->as_print();
@@ -253,7 +253,7 @@ int NetworkAgent::initialize_network_module(bool using_backup, bool validate_cer
     if (self_cert_summary) {
         module_cert_summary = SummarizeModule(library);
         if (module_cert_summary) {
-            if (IsSamePublisher(*self_cert_summary, *module_cert_summary))
+            if (IsTrustedBambuNetworkingPublisher(*self_cert_summary, *module_cert_summary))
                 networking_module = dlopen(library.c_str(), RTLD_LAZY);
             else
                 BOOST_LOG_TRIVIAL(info) << "module is from another publisher:" << module_cert_summary->as_print();

@@ -30,6 +30,7 @@ namespace Slic3r {
     };
 
     bool IsSamePublisher(const SignerSummary& a, const SignerSummary& b);
+    bool IsTrustedBambuNetworkingPublisher(const SignerSummary& host, const SignerSummary& module);
 
     std::optional<SignerSummary> SummarizeSelf();
 
